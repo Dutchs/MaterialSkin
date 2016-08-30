@@ -78,7 +78,8 @@ namespace MaterialSkin.Controls
             var g = pevent.Graphics;
             g.TextRenderingHint = TextRenderingHint.AntiAlias;
 
-            g.Clear(Parent.BackColor);
+            Color ClearColor = DesignMode ? SkinManager.GetApplicationBackgroundColor() : Parent.BackColor;
+            g.Clear(ClearColor);
 
             //Hover
             Color c = SkinManager.GetFlatButtonHoverBackgroundColor();
@@ -106,7 +107,7 @@ namespace MaterialSkin.Controls
             //Icon
             Rectangle iconRect = new Rectangle(8, 6, 24, 24);
 
-            if (String.IsNullOrEmpty(Text))
+            if (string.IsNullOrEmpty(Text))
                 // Center Icon
                 iconRect.X += 2;
 
@@ -133,14 +134,15 @@ namespace MaterialSkin.Controls
                 // Second 4: space between Icon and Text
                 textRect.X += 8 + 24 + 4;
             }
-
-            g.DrawString(
-                Text.ToUpper(),
-                SkinManager.ROBOTO_MEDIUM_10,
-                Enabled ? (Primary ? SkinManager.ColorScheme.PrimaryBrush : SkinManager.GetPrimaryTextBrush()) : SkinManager.GetFlatButtonDisabledTextBrush(),
-                textRect,
-                new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center }
-                );
+            using (var sf = new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center })
+            {
+                g.DrawString(
+                    Text.ToUpper(),
+                    SkinManager.ROBOTO_MEDIUM_10,
+                    Enabled ? (Primary ? SkinManager.ColorScheme.PrimaryBrush : SkinManager.GetPrimaryTextBrush()) : SkinManager.GetFlatButtonDisabledTextBrush(),
+                    textRect,
+                    sf);
+            }
         }
 
         private Size GetPreferredSize()
