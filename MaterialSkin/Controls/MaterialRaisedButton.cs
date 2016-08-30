@@ -56,7 +56,11 @@ namespace MaterialSkin.Controls
             set
             {
                 base.Text = value;
-                textSize = CreateGraphics().MeasureString(value.ToUpper(), SkinManager.ROBOTO_MEDIUM_10);
+                using (var g = CreateGraphics())
+                {
+                    textSize = g.MeasureString(value.ToUpper(), SkinManager.ROBOTO_MEDIUM_10);
+                }
+
                 if (AutoSize)
                     Size = GetPreferredSize();
                 Invalidate();
@@ -76,7 +80,8 @@ namespace MaterialSkin.Controls
             g.SmoothingMode = SmoothingMode.AntiAlias;
             g.TextRenderingHint = TextRenderingHint.AntiAlias;
 
-            g.Clear(Parent.BackColor);
+            Color ClearColor = DesignMode ? SkinManager.GetApplicationBackgroundColor() : Parent.BackColor;
+            g.Clear(ClearColor);
 
             using (var backgroundPath = DrawHelper.CreateRoundRect(ClientRectangle.X,
                 ClientRectangle.Y,
@@ -93,9 +98,11 @@ namespace MaterialSkin.Controls
                 {
                     var animationValue = animationManager.GetProgress(i);
                     var animationSource = animationManager.GetSource(i);
-                    var rippleBrush = new SolidBrush(Color.FromArgb((int)(51 - (animationValue * 50)), Color.White));
-                    var rippleSize = (int)(animationValue * Width * 2);
-                    g.FillEllipse(rippleBrush, new Rectangle(animationSource.X - rippleSize / 2, animationSource.Y - rippleSize / 2, rippleSize, rippleSize));
+                    using (var rippleBrush = new SolidBrush(Color.FromArgb((int)(51 - (animationValue * 50)), Color.White)))
+                    {
+                        var rippleSize = (int)(animationValue * Width * 2);
+                        g.FillEllipse(rippleBrush, new Rectangle(animationSource.X - rippleSize / 2, animationSource.Y - rippleSize / 2, rippleSize, rippleSize));
+                    }
                 }
             }
 
@@ -129,13 +136,15 @@ namespace MaterialSkin.Controls
                 // Second 4: space between Icon and Text
                 textRect.X += 8 + 24 + 4;
             }
-
-            g.DrawString(
-                Text.ToUpper(),
-                SkinManager.ROBOTO_MEDIUM_10, 
-                SkinManager.GetRaisedButtonTextBrush(Primary),
-                textRect,
-                new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center });
+            using (var sf = new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center })
+            {
+                g.DrawString(
+                    Text.ToUpper(),
+                    SkinManager.ROBOTO_MEDIUM_10,
+                    SkinManager.GetRaisedButtonTextBrush(Primary),
+                    textRect,
+                    sf);
+            }
         }
 
         private Size GetPreferredSize()
