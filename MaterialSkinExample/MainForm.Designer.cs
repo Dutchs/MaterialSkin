@@ -33,6 +33,7 @@ namespace MaterialSkinExample
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.materialFlatButton2 = new MaterialSkin.Controls.MaterialFlatButton();
             this.materialFlatButton1 = new MaterialSkin.Controls.MaterialFlatButton();
@@ -78,6 +79,7 @@ namespace MaterialSkinExample
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.item3ToolStripMenuItem = new MaterialSkin.Controls.MaterialToolStripMenuItem();
             this.materialFlatButton3 = new MaterialSkin.Controls.MaterialFlatButton();
+            this.materialToolTip1 = new MaterialSkin.Controls.MaterialToolTip(this.components);
             this.materialTabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -593,6 +595,7 @@ namespace MaterialSkinExample
             this.materialFlatButton4.Size = new System.Drawing.Size(118, 36);
             this.materialFlatButton4.TabIndex = 2;
             this.materialFlatButton4.Text = "Subtract";
+            this.materialToolTip1.SetToolTip(this.materialFlatButton4, "ToolTip showcase\r\nSubtract 10% from the progressbar");
             this.materialFlatButton4.UseVisualStyleBackColor = true;
             this.materialFlatButton4.Click += new System.EventHandler(this.materialFlatButton4_Click);
             // 
@@ -610,6 +613,7 @@ namespace MaterialSkinExample
             this.materialRaisedButton2.Size = new System.Drawing.Size(76, 36);
             this.materialRaisedButton2.TabIndex = 1;
             this.materialRaisedButton2.Text = "Add";
+            this.materialToolTip1.SetToolTip(this.materialRaisedButton2, "ToolTip showcase\r\nAdd 10% to the progressbar");
             this.materialRaisedButton2.UseVisualStyleBackColor = true;
             this.materialRaisedButton2.Click += new System.EventHandler(this.materialRaisedButton2_Click);
             // 
@@ -710,6 +714,13 @@ namespace MaterialSkinExample
             this.materialFlatButton3.Text = "DISABLED";
             this.materialFlatButton3.UseVisualStyleBackColor = true;
             // 
+            // materialToolTip1
+            // 
+            this.materialToolTip1.Depth = 0;
+            this.materialToolTip1.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialToolTip1.OwnerDraw = true;
+            this.materialToolTip1.TextPadding = 5;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -787,5 +798,6 @@ namespace MaterialSkinExample
         private MaterialFlatButton materialFlatButton3;
         private MaterialFlatButton materialFlatButton4;
         private MaterialLabel materialLabel2;
+        private MaterialToolTip materialToolTip1;
     }
 }
